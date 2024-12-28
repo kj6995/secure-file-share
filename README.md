@@ -11,7 +11,7 @@ A secure file sharing application with end-to-end encryption built using Next.js
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/secure-file-share.git
+git clone https://github.com/kj6995/secure-file-share.git
 ```
 
 2. Navigate to the project directory:

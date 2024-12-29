@@ -63,9 +63,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'secure_file_share.wsgi.application'
 
 # Database
-# To switch to PostgreSQL, set USE_POSTGRES=True in environment or uncomment the following line
-# USE_POSTGRES = True
-
 if os.getenv('USE_POSTGRES', '').lower() == 'true':
     DATABASES = {
         'default': {
@@ -81,7 +78,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'data/db.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'data', 'db.sqlite3'),
         }
     }
 
@@ -108,11 +105,11 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Media files
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
@@ -165,9 +162,13 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 
 # File upload settings
-MAX_UPLOAD_SIZE = 100 * 1024 * 1024  # 100MB
+MAX_UPLOAD_SIZE = 5 * 1024 * 1024  # 5MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = MAX_UPLOAD_SIZE
 DATA_UPLOAD_MAX_MEMORY_SIZE = MAX_UPLOAD_SIZE
+
+# Ensure temp directory exists and is writable
+FILE_UPLOAD_TEMP_DIR = os.path.join(BASE_DIR, 'data', 'tmp')
+os.makedirs(FILE_UPLOAD_TEMP_DIR, exist_ok=True)
 
 # Development-specific settings
 if DEBUG:

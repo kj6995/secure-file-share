@@ -28,8 +28,8 @@ services:
       - DEBUG=1
       - SECRET_KEY=your-secret-key-here
     volumes:
-      - ./backend/db.sqlite3:/app/db.sqlite3
-      - ./backend/media:/app/media
+      - ./backend:/app
     command: >
-      bash -c "python manage.py migrate &&
+      bash -c "python manage.py makemigrations &&
+               python manage.py migrate &&
                python manage.py runserver 0.0.0.0:8000"

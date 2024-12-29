@@ -5,8 +5,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      cache_from:
-        - node:18-alpine
     ports:
       - "3000:3000"
     environment:
@@ -18,8 +16,6 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-      cache_from:
-        - python:3.10-slim
     ports:
       - "8000:8000"
     environment:
@@ -28,8 +24,16 @@ services:
       - DEBUG=1
       - SECRET_KEY=your-secret-key-here
     volumes:
+      - backend_data:/app/data
       - ./backend:/app
+    user: "${UID:-1000}:${GID:-1000}"
     command: >
-      bash -c "python manage.py makemigrations &&
+      bash -c "mkdir -p /app/data &&
+               touch /app/data/db.sqlite3 &&
+               chmod 666 /app/data/db.sqlite3 &&
+               python manage.py makemigrations &&
                python manage.py migrate &&
                python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  backend_data:
